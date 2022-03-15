@@ -1,3 +1,5 @@
+use rand::Rng;
+
 mod errors;
 
 pub struct LayerTopology {
@@ -59,8 +61,18 @@ impl Layer {
 }
 
 impl Neuron {
-    fn random(input: usize) -> Self {
-        todo!()
+    fn random(output_size: usize) -> Self {
+        // Want random bias to simulate randomized evolution
+        let mut rng = rand::thread_rng();
+        // 0..3 is exlusive so (0, 1, 2)
+        // 0..=3 is inclusive so includes 3
+        let bias = rng.gen_range(-1.0..=1.0);
+
+        let weights = (0..output_size)
+            .map(|_| rng.gen_range(-1.0..=1.0))
+            .collect();
+        
+        Self { bias, weights }
     }
 
     fn propagate(&self, inputs: &[f32]) -> f32 {
