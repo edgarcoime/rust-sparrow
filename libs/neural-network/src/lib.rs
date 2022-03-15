@@ -1,3 +1,7 @@
+mod errors;
+
+use errors::*;
+
 // A network is built from layers
 pub struct Network {
     layers: Vec<Layer>
@@ -33,6 +37,15 @@ impl Layer {
 
 impl Neuron {
     fn propagate(&self, inputs: &[f32]) -> f32 {
+        // TODO: Implement better error checking
+        // if inputs.len() != self.weights.len() {
+        //     return Err(Error::MismatchedInputSize {
+        //         got: inputs.len(),
+        //         expected: self.weights.len()
+        //     });
+        // }
+        assert_eq!(inputs.len(), self.weights.len());
+
         let mut output = 0.;
 
         for i in 0..inputs.len() {
