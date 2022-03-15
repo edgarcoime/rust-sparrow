@@ -43,11 +43,9 @@ impl Network {
 
 impl Layer {
     fn random(input_neurons: usize, output_neurons: usize) -> Self {
-        let mut neurons = Vec::new();
-
-        for _ in 0..output_neurons {
-            neurons.push(Neuron::random(input_neurons));
-        }
+        let neurons = (0..output_neurons)
+            .map(|_| Neuron::random(input_neurons))
+            .collect();
 
         Self { neurons }
     }
