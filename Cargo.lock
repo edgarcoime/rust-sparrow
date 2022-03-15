@@ -30,6 +30,7 @@ name = "neural-network"
 version = "0.1.0"
 dependencies = [
  "rand",
+ "rand_chacha",
  "thiserror",
 ]
 

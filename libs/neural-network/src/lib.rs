@@ -1,6 +1,7 @@
-use rand::Rng;
-
 mod errors;
+mod tests;
+
+use rand::Rng;
 
 pub struct LayerTopology {
     neurons: usize,
@@ -45,8 +46,9 @@ impl Network {
 
 impl Layer {
     fn random(input_neurons: usize, output_neurons: usize) -> Self {
+        let mut rng = rand::thread_rng();
         let neurons = (0..output_neurons)
-            .map(|_| Neuron::random(input_neurons))
+            .map(|_| Neuron::random(&mut rng, input_neurons))
             .collect();
 
         Self { neurons }
@@ -61,9 +63,8 @@ impl Layer {
 }
 
 impl Neuron {
-    fn random(output_size: usize) -> Self {
+    fn random(rng: &mut dyn rand::RngCore, output_size: usize) -> Self {
         // Want random bias to simulate randomized evolution
-        let mut rng = rand::thread_rng();
         // 0..3 is exlusive so (0, 1, 2)
         // 0..=3 is inclusive so includes 3
         let bias = rng.gen_range(-1.0..=1.0);
