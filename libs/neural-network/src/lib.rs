@@ -43,7 +43,13 @@ impl Network {
 
 impl Layer {
     fn random(input_neurons: usize, output_neurons: usize) -> Self {
-        todo!()
+        let mut neurons = Vec::new();
+
+        for _ in 0..output_neurons {
+            neurons.push(Neuron::random(input_neurons));
+        }
+
+        Self { neurons }
     }
 
     fn propagate(&self, inputs: Vec<f32>) -> Vec<f32> {
@@ -55,6 +61,10 @@ impl Layer {
 }
 
 impl Neuron {
+    fn random(input: usize) -> Self {
+        todo!()
+    }
+
     fn propagate(&self, inputs: &[f32]) -> f32 {
         let output = inputs
             .iter()
