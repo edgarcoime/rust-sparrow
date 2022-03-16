@@ -12,3 +12,4 @@ rand = "0.8.5"
 
 [dev-dependencies]
 approx = "0.5.1"
+maplit = "1.0.2"

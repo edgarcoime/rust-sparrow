@@ -32,21 +32,43 @@ impl SelectionMethod for RouletteWheelSelection {
 // TODO: Write tests
 #[cfg(test)]
 mod test {
+    use std::collections::BTreeMap;
     use rand::SeedableRng;
     use rand_chacha::ChaCha8Rng;
-
     use super::*;
 
     #[test]
     fn test() {
-        todo!()
-        // let mut rng = ChaCha8Rng::from_seed(Default::default());
+        let method = RouletteWheelSelection::new();
+        let mut rng = ChaCha8Rng::from_seed(Default::default());
 
-        // let population = vec![];
+        let population = vec![
+            TestIndividual::new(2.),
+            TestIndividual::new(1.),
+            TestIndividual::new(4.),
+            TestIndividual::new(5.),
+            TestIndividual::new(3.),
+        ];
 
-        // let actual = RouletteWheelSelection::new()
-        //     .select(&mut rng, &population);
+        let actual_histogram: BTreeMap<i32, _> = (0..1000)
+            .map(|_| method.select(&mut rng, &population))
+            .fold(Default::default(), |mut histogram, individual| {
+                *histogram
+                    .entry(individual.fitness() as _)
+                    .or_default() += 1;
+                
+                histogram
+            });
 
-        // assert!()
+        let expected_histogram = maplit::btreemap! {
+            // fitness => how many times this fitess has been chosen
+            1 => 60,
+            2 => 142,
+            3 => 183,
+            4 => 273,
+            5 => 342,
+        };
+
+        assert_eq!(actual_histogram, expected_histogram);
     }
 }
