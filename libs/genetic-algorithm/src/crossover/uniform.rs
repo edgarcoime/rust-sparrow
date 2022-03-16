@@ -14,22 +14,18 @@ impl CrossOverMethod for UniformCrossover {
     fn crossover(
         &self,
         rng: &mut dyn rand::RngCore,
-        parent_a: &crate::chromosome::Chromosome,
-        parent_b: &crate::chromosome::Chromosome,
+        parent_a: &Chromosome,
+        parent_b: &Chromosome,
     ) -> Chromosome {
-        let mut child: Vec<f32> = Vec::new(); // New chromosome
-        let gene_count = parent_a.len();
+        assert_eq!(parent_a.len(), parent_b.len());
 
-        for gene_idx in 0..gene_count {
-            let gene = if rng.gen_bool(0.5) {
-                parent_a[gene_idx]
-            } else {
-                parent_b[gene_idx]
-            };
+        let parent_a = parent_a.iter();
+        let parent_b = parent_b.iter();
 
-            child.push(gene)
-        }
-
-        child.into_iter().collect()
+        // use combinator instead
+        parent_a
+            .zip(parent_b)
+            .map(|(&a, &b)| if rng.gen_bool(0.5) { a } else { b })
+            .collect()
     }
 }
