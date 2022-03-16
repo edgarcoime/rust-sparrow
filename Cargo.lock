@@ -78,6 +78,7 @@ name = "lib-simulation"
 version = "0.1.0"
 dependencies = [
  "nalgebra",
+ "rand",
 ]
 
 [[package]]
@@ -129,6 +130,7 @@ dependencies = [
  "num-complex",
  "num-rational",
  "num-traits",
+ "rand",
  "simba",
  "typenum",
 ]
