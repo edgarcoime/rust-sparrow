@@ -1,11 +1,12 @@
 #![feature(type_alias_impl_trait)]
 
 use rand::RngCore;
-use self::{individual::*, selection::*};
+use self::{individual::*, selection::*, chromosome::*, crossover::*};
 
 mod individual;
-mod selection;
 mod chromosome;
+mod selection;
+mod crossover;
 
 pub struct GeneticAlgorithm<S> {
     selection_method: S,

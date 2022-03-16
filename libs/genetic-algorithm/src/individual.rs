@@ -1,4 +1,9 @@
+use core::panic;
+
+use crate::*;
+
 pub trait Individual {
+    fn chromosome(&self) -> &Chromosome;
     fn fitness(&self) -> f32;
 }
 
@@ -17,6 +22,10 @@ impl TestIndividual {
 
 #[cfg(test)]
 impl Individual for TestIndividual {
+    fn chromosome(&self) -> &Chromosome {
+        panic!("not supported for TestIndividual")
+    }
+
     fn fitness(&self) -> f32 {
         self.fitness
     }
