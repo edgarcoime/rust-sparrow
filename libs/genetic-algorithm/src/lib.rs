@@ -1,3 +1,5 @@
+#![feature(type_alias_impl_trait)]
+
 use rand::RngCore;
 use self::{individual::*, selection::*};
 
