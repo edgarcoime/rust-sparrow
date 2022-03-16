@@ -1,11 +1,12 @@
 use nalgebra as na;
 use rand::{Rng, RngCore};
-use self::{world::*, animal::*, food::*};
+pub use self::{world::*, animal::*, food::*};
 
 mod world;
 mod animal;
 mod food;
 
+#[derive(Debug)]
 pub struct Simulation {
     world: World,
 }
