@@ -2,16 +2,46 @@ import * as sim from "lib-simulation-wasm";
 
 // const simulation = new sim.Simulation(); // <- BIG Difference you must REACH out to rust for current memory
 //                                          // rather than creating an instance of simulation in js
-const simulation = sim.Simulation.new();
-console.log(simulation.world());
+// const simulation = sim.Simulation.new();
+// console.log(simulation.world());
 // const world = simulation.world();
 // console.log(world);
 
-const viewport = document.getElementById("viewport");
-const ctx = viewport.getContext("2d");
+// const viewport = document.getElementById("viewport");
+// const ctx = viewport.getContext("2d");
 
 // Determines color of the upcoming shape.
-ctx.fillStyle = 'rgb(255, 0, 0)';
+// ctx.fillStyle = 'rgb(255, 0, 0)';
 
 // Draws a rectangle filled with color determined by `fillStyle`
-ctx.fillRect(10, 10, 100, 50) // X Y W H
+// ctx.fillRect(10, 10, 100, 50) // X Y W H
+
+const main = () => {
+  const simulation = sim.Simulation.new();
+
+  const viewport = document.getElementById("viewport");
+  const viewportWidth = viewport.width;
+  const viewportHeight = viewport.height;
+  const viewportScale = window.devicePixelRatio || 1;
+  console.log(viewportScale)
+
+  viewport.width = viewportWidth * viewportScale;
+  viewport.height = viewportHeight * viewportScale;
+  viewport.style.width = viewportWidth + "px";
+  viewport.style.height = viewportHeight + "px";
+
+  const ctx = viewport.getContext("2d");
+  ctx.scale(viewportScale, viewportScale);
+  ctx.fillStyle = 'rgb(0,0,0)';
+
+  for (const animal of simulation.world().animals) {
+    ctx.fillRect(
+      animal.x * viewportWidth,
+      animal.y * viewportHeight,
+      15,
+      15
+    );
+  }
+}
+
+main()
