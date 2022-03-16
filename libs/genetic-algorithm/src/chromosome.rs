@@ -1,6 +1,16 @@
+use std::ops::Index;
+
 #[derive(Clone, Debug)]
 pub struct Chromosome {
     genes: Vec<f32>,
+}
+
+impl Index<usize> for Chromosome {
+    type Output = f32;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.genes[index]
+    }
 }
 
 impl Chromosome {
@@ -25,6 +35,19 @@ mod tests {
     fn chromosome() -> Chromosome {
         Chromosome {
             genes: vec![3.0, 1.0, 2.0],
+        }
+    }
+
+    mod index {
+        use super::*;
+
+        #[test]
+        fn test() {
+            let chromosome = chromosome();
+
+            assert_eq!(chromosome[0], 3.0);
+            assert_eq!(chromosome[1], 1.0);
+            assert_eq!(chromosome[2], 2.0);
         }
     }
 
