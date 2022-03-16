@@ -1,7 +1,7 @@
 #![feature(type_alias_impl_trait)]
 
 use rand::RngCore;
-use self::{individual::*, selection::*, chromosome::*, crossover::*};
+use self::{individual::*, selection::*, chromosome::*, crossover::*, mutation::*};
 
 mod individual;
 mod chromosome;
@@ -12,6 +12,7 @@ mod mutation;
 pub struct GeneticAlgorithm<S> {
     selection_method: S,
     crossover_method: Box<dyn CrossOverMethod>,
+    mutation_method: Box<dyn MutationMethod>,
 }
 
 impl<S> GeneticAlgorithm<S>
@@ -21,10 +22,12 @@ where
     pub fn new(
         selection_method: S,
         crossover_method: impl CrossOverMethod + 'static,
+        mutation_method: impl MutationMethod + 'static,
     ) -> Self {
         Self {
             selection_method,
-            crossover_method: Box::new(crossover_method)
+            crossover_method: Box::new(crossover_method),
+            mutation_method: Box::new(mutation_method),
         }
     }
 
@@ -51,6 +54,8 @@ where
                     .crossover(rng, parent_a, parent_b);
 
                 // TODO: mutation
+                self.mutation_method.mutate(rng, &mut child);
+
                 // TODO: convert chromosome back into individual
                 todo!()
             })
