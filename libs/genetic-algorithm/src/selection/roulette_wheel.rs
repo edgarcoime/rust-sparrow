@@ -1,5 +1,3 @@
-use rand::prelude::SliceRandom;
-
 use crate::*;
 
 // One of the manyy selection methods we could choose
@@ -31,14 +29,14 @@ impl SelectionMethod for RouletteWheelSelection {
 
 // TODO: Write tests
 #[cfg(test)]
-mod test {
+mod tests {
     use std::collections::BTreeMap;
     use rand::SeedableRng;
     use rand_chacha::ChaCha8Rng;
     use super::*;
 
     #[test]
-    fn test() {
+    fn probability_distribution() {
         let method = RouletteWheelSelection::new();
         let mut rng = ChaCha8Rng::from_seed(Default::default());
 

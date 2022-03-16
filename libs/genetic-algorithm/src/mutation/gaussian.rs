@@ -1,7 +1,4 @@
-use rand::Rng;
-
 use crate::*;
-
 use super::MutationMethod;
 
 #[derive(Clone, Debug)]

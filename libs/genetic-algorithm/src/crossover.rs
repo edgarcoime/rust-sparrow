@@ -1,3 +1,5 @@
+pub use self::uniform::*;
+
 use crate::*;
 
 mod uniform;

@@ -1,4 +1,5 @@
-use rand::RngCore;
+pub use self::roulette_wheel::*;
+
 use crate::*;
 
 mod roulette_wheel;

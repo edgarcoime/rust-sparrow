@@ -1,7 +1,13 @@
 #![feature(type_alias_impl_trait)]
-
-use rand::RngCore;
-use self::{individual::*, selection::*, chromosome::*, crossover::*, mutation::*};
+use rand::seq::SliceRandom;
+use rand::{Rng, RngCore};
+use self::{
+    chromosome::*,
+    crossover::*,
+    individual::*,
+    mutation::*,
+    selection::*,
+};
 
 mod individual;
 mod chromosome;
@@ -60,5 +66,49 @@ where
                 I::create(child)
             })
             .collect()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rand::SeedableRng;
+    use rand_chacha::ChaCha8Rng;
+
+    fn individual(genes: &[f32]) -> TestIndividual {
+        let chromosome = genes.iter().cloned().collect();
+        TestIndividual::create(chromosome)
+    }
+
+    #[test]
+    fn test() {
+        let mut rng = ChaCha8Rng::from_seed(Default::default());
+
+        let ga = GeneticAlgorithm::new(
+            RouletteWheelSelection::new(),
+            UniformCrossover::new(),
+            GaussianMutation::new(0.5, 0.5),
+        );
+
+        let mut population = vec![
+            individual(&[0., 0., 0.]),  // fitness = 0.0
+            individual(&[1., 1., 1.]),  // fitness = 3.0
+            individual(&[1., 2., 1.]),  // fitness = 4.0
+            individual(&[1., 2., 4.]),  // fitness = 7.0
+        ];
+
+        // Running `.evolve()` so that differences between initial and ouput popolation are easier to spot
+        for _ in 0..25 {
+            population = ga.evolve(&mut rng, &population);
+        }
+
+        let expected_population = vec![
+            individual(&[0.109105855, 2.796503, 3.5660858]),
+            individual(&[0.9319788, 2.9991293, 4.931279]),
+            individual(&[0.017960489, 3.0900886, 4.1272745]),
+            individual(&[-0.3720149, 2.6197953, 4.113259]),
+        ];
+
+        assert_eq!(population, expected_population);
     }
 }

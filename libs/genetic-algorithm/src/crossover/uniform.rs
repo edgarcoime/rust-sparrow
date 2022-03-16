@@ -1,7 +1,6 @@
-use rand::Rng;
 use crate::*;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct UniformCrossover;
 
 impl UniformCrossover {
@@ -13,7 +12,7 @@ impl UniformCrossover {
 impl CrossOverMethod for UniformCrossover {
     fn crossover(
         &self,
-        rng: &mut dyn rand::RngCore,
+        rng: &mut dyn RngCore,
         parent_a: &Chromosome,
         parent_b: &Chromosome,
     ) -> Chromosome {
