@@ -6,6 +6,8 @@ impl GeneticAlgorithm {
     }
 
     pub fn evolve<T>(&self, population: &[T]) -> Vec<T> {
+        // https://www.tutorialspoint.com/genetic_algorithms/genetic_algorithms_parent_selection.htm
+        // Fitness algorithm to use
         assert!(!population.is_empty())
 
         (0..population.len())
