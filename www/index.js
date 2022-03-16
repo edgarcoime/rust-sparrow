@@ -16,19 +16,36 @@ import * as sim from "lib-simulation-wasm";
 // Draws a rectangle filled with color determined by `fillStyle`
 // ctx.fillRect(10, 10, 100, 50) // X Y W H
 
-CanvasRenderingContext2D.prototype.drawTriangle = function (x, y, size) {
-  this.beginPath();
-  this.moveTo(x, y);
-  this.lineTo(x + size, y + size);
-  this.lineTo(x - size, y + size);
-  this.lineTo(x, y);
+CanvasRenderingContext2D.prototype.drawTriangle = 
+  function (x, y, size, rotation) { 
+    this.beginPath();
 
-  this.fillStyle = 'rgb(0, 0, 0)';
-  this.fill();
-}
+    this.moveTo(
+        x + Math.cos(rotation) * size * 1.5,
+        y + Math.sin(rotation) * size * 1.5,
+    );
+
+    this.lineTo(
+        x + Math.cos(rotation + 2.0 / 3.0 * Math.PI) * size,
+        y + Math.sin(rotation + 2.0 / 3.0 * Math.PI) * size,
+    );
+
+    this.lineTo(
+        x + Math.cos(rotation - 2.0 / 3.0 * Math.PI) * size,
+        y + Math.sin(rotation - 2.0 / 3.0 * Math.PI) * size,
+    );
+
+    this.lineTo(
+        x + Math.cos(rotation) * size * 1.5,
+        y + Math.sin(rotation) * size * 1.5,
+    );
+
+    this.fill();
+  };
 
 const main = () => {
   const simulation = sim.Simulation.new();
+  console.log(simulation.world().animals)
 
   const viewport = document.getElementById("viewport");
   const viewportWidth = viewport.width;
@@ -50,6 +67,7 @@ const main = () => {
       animal.x * viewportWidth,
       animal.y * viewportHeight,
       0.01 * viewportWidth,
+      animal.rotation,
     )
   }
 }
