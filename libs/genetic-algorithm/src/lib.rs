@@ -3,6 +3,7 @@ use self::{individual::*, selection::*};
 
 mod individual;
 mod selection;
+mod chromosome;
 
 pub struct GeneticAlgorithm<S> {
     selection_method: S,
@@ -18,24 +19,22 @@ where
         }
     }
 
-    pub fn evolve<I>(&self, population: &[I]) -> Vec<I>
+    pub fn evolve<I>(&self, rng: &mut dyn RngCore, population: &[I]) -> Vec<I>
     where
         I: Individual
     {
         assert!(!population.is_empty());
 
-        let rng = rand
-        
         (0..population.len())
             .map(|_| {
                 // TODO: selection
                 let parent_a = self
                     .selection_method
-                    .select(population);
+                    .select(rng, population);
                 
                 let parent_b = self
                     .selection_method
-                    .select(population);
+                    .select(rng, population);
 
                 // TODO: crossover
                 // TODO: mutation
