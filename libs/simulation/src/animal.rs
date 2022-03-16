@@ -16,4 +16,12 @@ impl Animal {
             speed: 0.002,
         }
     }
+
+    pub fn position(&self) -> na::Point2<f32> {
+        self.position
+    }
+
+    pub fn rotation(&self) -> na::Rotation2<f32> {
+        self.rotation
+    }
 }
