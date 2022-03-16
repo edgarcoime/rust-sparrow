@@ -1,16 +1,8 @@
-use std::ops::Index;
+use std::{ops::Index};
 
 #[derive(Clone, Debug)]
 pub struct Chromosome {
     genes: Vec<f32>,
-}
-
-impl Index<usize> for Chromosome {
-    type Output = f32;
-
-    fn index(&self, index: usize) -> &Self::Output {
-        &self.genes[index]
-    }
 }
 
 impl Chromosome {
@@ -27,6 +19,22 @@ impl Chromosome {
     }
 }
 
+impl Index<usize> for Chromosome {
+    type Output = f32;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.genes[index]
+    }
+}
+
+impl FromIterator<f32> for Chromosome {
+    fn from_iter<T: IntoIterator<Item = f32>>(iter: T) -> Self {
+        Self {
+            genes: iter.into_iter().collect(),
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -35,19 +43,6 @@ mod tests {
     fn chromosome() -> Chromosome {
         Chromosome {
             genes: vec![3.0, 1.0, 2.0],
-        }
-    }
-
-    mod index {
-        use super::*;
-
-        #[test]
-        fn test() {
-            let chromosome = chromosome();
-
-            assert_eq!(chromosome[0], 3.0);
-            assert_eq!(chromosome[1], 1.0);
-            assert_eq!(chromosome[2], 2.0);
         }
     }
 
@@ -86,6 +81,33 @@ mod tests {
             assert_eq!(genes[0], &30.0);
             assert_eq!(genes[1], &10.0);
             assert_eq!(genes[2], &20.0);
+        }
+    }
+
+    mod index {
+        use super::*;
+
+        #[test]
+        fn test() {
+            let chromosome: Chromosome = vec![3.0, 1.0, 2.0]
+                .into_iter()
+                .collect();
+
+            assert_eq!(chromosome[0], 3.0);
+            assert_eq!(chromosome[1], 1.0);
+            assert_eq!(chromosome[2], 2.0);
+        }
+    }
+
+    mod from_iterator {
+        use super::*;
+
+        #[test]
+        fn test() {
+            let chromosome = chromosome();
+            assert_eq!(chromosome[0], 3.0);
+            assert_eq!(chromosome[1], 1.0);
+            assert_eq!(chromosome[2], 2.0);
         }
     }
 }
