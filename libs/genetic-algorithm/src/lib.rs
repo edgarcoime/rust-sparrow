@@ -57,7 +57,7 @@ where
                 self.mutation_method.mutate(rng, &mut child);
 
                 // TODO: convert chromosome back into individual
-                todo!()
+                I::create(child)
             })
             .collect()
     }

@@ -1,14 +1,13 @@
-use core::panic;
-
 use crate::*;
 
 pub trait Individual {
+    fn create(chromosome: Chromosome) -> Self;
     fn chromosome(&self) -> &Chromosome;
     fn fitness(&self) -> f32;
 }
 
 #[cfg(test)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
 pub struct TestIndividual {
     fitness: f32,
 }
@@ -28,5 +27,9 @@ impl Individual for TestIndividual {
 
     fn fitness(&self) -> f32 {
         self.fitness
+    }
+
+    fn create(chromosome: Chromosome) -> Self {
+        todo!()
     }
 }
