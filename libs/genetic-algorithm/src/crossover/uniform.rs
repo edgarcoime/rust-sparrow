@@ -26,6 +26,8 @@ impl CrossOverMethod for UniformCrossover {
             } else {
                 parent_b[gene_idx]
             };
+
+            child.push(gene)
         }
 
         child.into_iter().collect()
