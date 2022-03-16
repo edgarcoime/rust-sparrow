@@ -16,6 +16,17 @@ import * as sim from "lib-simulation-wasm";
 // Draws a rectangle filled with color determined by `fillStyle`
 // ctx.fillRect(10, 10, 100, 50) // X Y W H
 
+CanvasRenderingContext2D.prototype.drawTriangle = function (x, y, size) {
+  this.beginPath();
+  this.moveTo(x, y);
+  this.lineTo(x + size, y + size);
+  this.lineTo(x - size, y + size);
+  this.lineTo(x, y);
+
+  this.fillStyle = 'rgb(0, 0, 0)';
+  this.fill();
+}
+
 const main = () => {
   const simulation = sim.Simulation.new();
 
@@ -35,12 +46,11 @@ const main = () => {
   ctx.fillStyle = 'rgb(0,0,0)';
 
   for (const animal of simulation.world().animals) {
-    ctx.fillRect(
+    ctx.drawTriangle(
       animal.x * viewportWidth,
       animal.y * viewportHeight,
-      15,
-      15
-    );
+      0.01 * viewportWidth,
+    )
   }
 }
 
