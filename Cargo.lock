@@ -24,7 +24,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "genetic-algorithm"
+name = "getrandom"
+version = "0.2.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d39cd93900197114fa1fcb7ae84ca742095eed9442088988ae74fa744e930e77"
+dependencies = [
+ "cfg-if",
+ "libc",
+ "wasi",
+]
+
+[[package]]
+name = "lib-genetic-algorithm"
 version = "0.1.0"
 dependencies = [
  "approx",
@@ -35,14 +46,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "getrandom"
-version = "0.2.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d39cd93900197114fa1fcb7ae84ca742095eed9442088988ae74fa744e930e77"
+name = "lib-neural-network"
+version = "0.1.0"
 dependencies = [
- "cfg-if",
- "libc",
- "wasi",
+ "approx",
+ "rand",
+ "rand_chacha",
+ "thiserror",
 ]
 
 [[package]]
@@ -56,16 +66,6 @@ name = "maplit"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3e2e65a1a2e43cfcb47a895c4c8b10d1f4a61097f9f254f183aee60cad9c651d"
-
-[[package]]
-name = "neural-network"
-version = "0.1.0"
-dependencies = [
- "approx",
- "rand",
- "rand_chacha",
- "thiserror",
-]
 
 [[package]]
 name = "num-traits"
