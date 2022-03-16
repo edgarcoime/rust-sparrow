@@ -1,8 +1,20 @@
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
+pub struct GeneticAlgorithm
+
+impl GeneticAlgorithm {
+    pub fn new() -> Self {
+        Self
+    }
+
+    pub fn evolve<T>(&self, population: &[T]) -> Vec<T> {
+        assert!(!population.is_empty())
+
+        (0..population.len())
+            .map(|_| {
+                // TODO: Selection
+                // TODO: crossover
+                // TODO: mutation
+                todo!()
+            })
+            .collect()
     }
 }
