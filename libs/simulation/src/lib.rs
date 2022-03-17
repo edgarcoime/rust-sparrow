@@ -25,9 +25,31 @@ impl Simulation {
     }
 
     /// Performs a single step - a single frame of our animation
-    pub fn step(&mut self) {
+    pub fn step(&mut self, rng: &mut dyn RngCore) {
+        self.process_collisions(rng);
+        self.process_movements();
+    }
+}
+
+impl Simulation {
+    fn process_movements(&mut self) {
         self.world.animals.iter_mut()
             .for_each(|a| a.process_movement())
+    }
+
+    fn process_collisions(&mut self, rng: &mut dyn RngCore) {
+        for animal in self.world.animals.iter_mut() {
+            for food in self.world.foods.iter_mut() {
+                let distance = na::distance(
+                    &animal.position,
+                    &food.position
+                );
+
+                if distance <= 0.01 {
+                    food.position = rng.gen();
+                }
+            }
+        }
     }
 }
 
