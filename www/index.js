@@ -16,6 +16,7 @@ import * as sim from "lib-simulation-wasm";
 // Draws a rectangle filled with color determined by `fillStyle`
 // ctx.fillRect(10, 10, 100, 50) // X Y W H
 
+
 CanvasRenderingContext2D.prototype.drawTriangle = 
   function (x, y, size, rotation) { 
     this.beginPath();
@@ -43,24 +44,37 @@ CanvasRenderingContext2D.prototype.drawTriangle =
     this.fill();
   };
 
-const main = () => {
-  const simulation = sim.Simulation.new();
-  console.log(simulation.world().animals)
+const simulation = sim.Simulation.new();
+console.log(simulation.world().animals)
 
-  const viewport = document.getElementById("viewport");
-  const viewportWidth = viewport.width;
-  const viewportHeight = viewport.height;
-  const viewportScale = window.devicePixelRatio || 1;
-  console.log(viewportScale)
+const viewport = document.getElementById("viewport");
+const viewportWidth = viewport.width;
+const viewportHeight = viewport.height;
+const viewportScale = window.devicePixelRatio || 1;
+console.log(viewportScale)
 
-  viewport.width = viewportWidth * viewportScale;
-  viewport.height = viewportHeight * viewportScale;
-  viewport.style.width = viewportWidth + "px";
-  viewport.style.height = viewportHeight + "px";
+viewport.width = viewportWidth * viewportScale;
+viewport.height = viewportHeight * viewportScale;
+viewport.style.width = viewportWidth + "px";
+viewport.style.height = viewportHeight + "px";
 
-  const ctx = viewport.getContext("2d");
-  ctx.scale(viewportScale, viewportScale);
-  ctx.fillStyle = 'rgb(0,0,0)';
+const ctx = viewport.getContext("2d");
+ctx.scale(viewportScale, viewportScale);
+ctx.fillStyle = 'rgb(0,0,0)';
+
+for (const animal of simulation.world().animals) {
+  ctx.drawTriangle(
+    animal.x * viewportWidth,
+    animal.y * viewportHeight,
+    0.01 * viewportWidth,
+    animal.rotation,
+  )
+}
+
+function redraw() {
+  ctx.clearRect(0, 0, viewportWidth, viewportHeight);
+
+  simulation.step();
 
   for (const animal of simulation.world().animals) {
     ctx.drawTriangle(
@@ -68,8 +82,10 @@ const main = () => {
       animal.y * viewportHeight,
       0.01 * viewportWidth,
       animal.rotation,
-    )
+    );
   }
+
+  requestAnimationFrame(redraw);
 }
 
-main()
+redraw();
