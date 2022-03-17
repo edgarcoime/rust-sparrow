@@ -234,4 +234,38 @@ mod tests {
             }.run()
         }
     }
+
+    mod different_fov_angles {
+        use super::*;
+        use test_case::test_case;
+
+        #[test_case(0.25 * PI, " +         + ")]
+        #[test_case(0.50 * PI, ".  +     +  .")]
+        #[test_case(0.75 * PI, "  . +   + .  ")]
+        #[test_case(1.00 * PI, "   . + + .   ")]
+        #[test_case(1.25 * PI, "   . + + .   ")]
+        #[test_case(1.50 * PI, ".   .+ +.   .")]
+        #[test_case(1.75 * PI, ".   .+ +.   .")]
+        #[test_case(2.00 * PI, "+.  .+ +.  .+")]
+        fn test(fov_angle: f32, expected_vision: &'static str) {
+            TestCase {
+                foods: vec![
+                    food(0.0, 0.0),
+                    food(0.0, 0.33),
+                    food(0.0, 0.66),
+                    food(0.0, 1.0),
+                    food(1.0, 0.0),
+                    food(1.0, 0.33),
+                    food(1.0, 0.66),
+                    food(1.0, 1.0),
+                ],
+                fov_range: 1.0,
+                x: 0.5,
+                y: 0.5,
+                rot: 0.0,
+                fov_angle,
+                expected_vision,
+            }.run()
+        }
+    }
 }
