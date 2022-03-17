@@ -164,4 +164,74 @@ mod tests {
             }.run()
         }
     }
+
+    mod different_rotations {
+        use super::*;
+        use test_case::test_case;
+
+        #[test_case(0.00 * PI, "         +   ")] // Food is to the right
+        #[test_case(0.25 * PI, "        +    ")]
+        #[test_case(0.50 * PI, "      +      ")]
+        #[test_case(0.75 * PI, "    +        ")]
+        #[test_case(1.00 * PI, "   +         ")] // Food is behind us
+        #[test_case(1.25 * PI, " +           ")] // (Continue to see it
+        #[test_case(1.50 * PI, "            +")] // Because of 360% fov angle)
+        #[test_case(1.75 * PI, "           + ")]
+        #[test_case(2.00 * PI, "         +   ")] // Here we've done 360
+        #[test_case(2.25 * PI, "        +    ")] // (and a bit more, to
+        #[test_case(2.50 * PI, "      +      ")] // prove the numbers wrap.)
+        fn test(rot: f32, expected_vision: &'static str) {
+            TestCase {
+                foods: vec![food(0.5, 1.0)],
+                fov_range: 1.0, 
+                fov_angle: 2.0 * PI,
+                x: 0.5,
+                y: 0.5,
+                rot,
+                expected_vision,
+            }.run()
+        }
+    }
+
+    mod different_positions {
+        use super::*;
+        use test_case::test_case;
+
+        // Checking the X axis
+        // (You can see the bird "flying away" from the foods)
+        #[test_case(0.9, 0.5, "#           #")]
+        #[test_case(0.8, 0.5, "  #       #  ")]
+        #[test_case(0.7, 0.5, "   +     +   ")]
+        #[test_case(0.6, 0.5, "    +   +    ")]
+        #[test_case(0.5, 0.5, "    +   +    ")]
+        #[test_case(0.4, 0.5, "     + +     ")]
+        #[test_case(0.3, 0.5, "     . .     ")]
+        #[test_case(0.2, 0.5, "     . .     ")]
+        #[test_case(0.1, 0.5, "     . .     ")]
+        #[test_case(0.0, 0.5, "             ")]
+        //
+        // Checking the Y axis:
+        // (You can see the bird is "flying alongside" the foods)
+        #[test_case(0.5, 0.0, "            +")]
+        #[test_case(0.5, 0.1, "          + .")]
+        #[test_case(0.5, 0.2, "         +  +")]
+        #[test_case(0.5, 0.3, "        + +  ")]
+        #[test_case(0.5, 0.4, "      +  +   ")]
+        #[test_case(0.5, 0.6, "   +  +      ")]
+        #[test_case(0.5, 0.7, "  + +        ")]
+        #[test_case(0.5, 0.8, "+  +         ")]
+        #[test_case(0.5, 0.9, ". +          ")]
+        #[test_case(0.5, 1.0, "+            ")]
+        fn test(x: f32, y: f32, expected_vision: &'static str) {
+            TestCase {
+                foods: vec![food(1.0, 0.4), food(1.0, 0.6)],
+                fov_range: 1.0,
+                fov_angle: FRAC_PI_2,
+                rot: 0.0,
+                x,
+                y,
+                expected_vision,
+            }.run()
+        }
+    }
 }
