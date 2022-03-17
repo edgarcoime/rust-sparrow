@@ -1,6 +1,6 @@
 pub use self::layer_topology::*;
-
 use self::{layer::*, neuron::*};
+use rand::{Rng, RngCore};
 
 mod errors;
 mod layer;
@@ -14,12 +14,16 @@ pub struct Network {
 }
 
 impl Network {
-    pub fn random(layers: &[LayerTopology]) -> Self {
+    pub fn random(rng: &mut dyn RngCore, layers: &[LayerTopology]) -> Self {
         assert!(layers.len() > 1);
 
         let layers = layers
             .windows(2)
-            .map(|layers| Layer::random(layers[0].neurons, layers[1].neurons))
+            .map(|layers| Layer::random(
+                rng, 
+                layers[0].neurons, 
+                layers[1].neurons)
+            )
             .collect();
 
         Self { layers }

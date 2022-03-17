@@ -40,14 +40,14 @@ pub fn whos_that_dog() -> String {
     "That's not a dog that's a turtle".into()
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+// #[cfg(test)]
+// mod tests {
+//     use super::*;
 
-    #[test]
-    fn test() {
-        let sim = Simulation::new();
-        println!("{:?}", sim.world());
-        println!("Hello world");
-    }
-}
+//     #[test]
+//     fn test() {
+//         let sim = Simulation::new();
+//         println!("{:?}", sim.world());
+//         println!("Hello world");
+//     }
+// }

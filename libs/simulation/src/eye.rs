@@ -91,7 +91,6 @@ impl Default for Eye {
 #[cfg(test)]
 mod tests {
     use super::*;
-
     const TEST_EYE_CELLS: usize = 13;
 
     struct TestCase {
