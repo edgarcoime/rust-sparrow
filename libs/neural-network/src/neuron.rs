@@ -5,8 +5,8 @@ use crate::*;
 // A Neuron contains biases and output weights
 #[derive(Debug, Clone)]
 pub struct Neuron {
-    bias: f32,
-    weights: Vec<f32>,
+    crate bias: f32,
+    crate weights: Vec<f32>,
 }
 
 impl Neuron {

@@ -14,6 +14,10 @@ pub struct Network {
 }
 
 impl Network {
+    crate fn new(layers: Vec<Layer>) -> Self {
+        Self { layers }
+    }
+
     pub fn random(rng: &mut dyn RngCore, layers: &[LayerTopology]) -> Self {
         assert!(layers.len() > 1);
 
@@ -33,6 +37,22 @@ impl Network {
         self.layers
             .iter()
             .fold(inputs, |inputs, layer| layer.propagate(inputs))
+    }
+
+    pub fn weights(&self) -> Vec<f32> {
+        let mut weights = Vec::new();
+
+        for layer in &self.layers {
+            for neuron in &layer.neurons {
+                weights.push(neuron.bias);
+
+                for weight in &neuron.weights {
+                    weights.push(*weight)
+                }
+            }
+        }
+
+        weights
     }
 }
 
