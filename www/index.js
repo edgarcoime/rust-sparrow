@@ -41,8 +41,19 @@ CanvasRenderingContext2D.prototype.drawTriangle =
         y + Math.sin(rotation) * size * 1.5,
     );
 
+    this.fillStyle = 'rgb(255, 255, 255)';
     this.fill();
-  };
+};
+
+CanvasRenderingContext2D.prototype.drawCircle = 
+  function(x, y, radius) {
+    this.beginPath();
+
+    this.arc(x, y, radius, 0, 2.0 * Math.PI);
+
+    this.fillStyle = 'rgb(0, 255, 128)';
+    this.fill();
+};
 
 const simulation = sim.Simulation.new();
 console.log(simulation.world().animals)
@@ -76,7 +87,17 @@ function redraw() {
 
   simulation.step();
 
-  for (const animal of simulation.world().animals) {
+  const world = simulation.world();
+
+  for (const food of world.foods) {
+    ctx.drawCircle(
+      food.x * viewportWidth,
+      food.y * viewportHeight,
+      (0.01 / 2.0) * viewportWidth,
+    );
+  }
+
+  for (const animal of world.animals) {
     ctx.drawTriangle(
       animal.x * viewportWidth,
       animal.y * viewportHeight,
