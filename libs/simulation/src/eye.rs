@@ -33,7 +33,42 @@ impl Eye {
         rotation: na::Rotation2<f32>,
         foods: &[Food],
     ) -> Vec<f32> {
-        todo!()
+        let mut cells = vec![0.; self.cells];
+
+        for food in foods {
+            let vec = food.position - position;
+            let dist = vec.norm();
+
+            // Food is out of range
+            if dist >= self.fov_range {
+                continue;
+            }
+
+            let angle = na::Rotation2::rotation_between(
+                &na::Vector2::x(),
+                &vec,
+            ).angle();
+
+            let angle = angle - rotation.angle();
+            let angle = na::wrap(angle, -PI, PI);
+
+            // if current angle is outside our birdie's fov, jump to the next food
+            if  angle < -self.fov_angle / 2. ||
+                angle > self.fov_angle / 2.
+                {
+                    continue
+                }
+            
+            let angle = angle + self.fov_angle / 2.;
+            let cell = angle / self.fov_angle;
+            let cell = cell * (self.cells as f32);
+            let cell = (cell as usize).min(cells.len() - 1);
+
+            let energy = (self.fov_range - dist) / self.fov_range;
+            cells[cell] += energy;
+        }
+
+        cells
     }
 }
 
