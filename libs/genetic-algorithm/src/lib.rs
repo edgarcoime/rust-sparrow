@@ -1,10 +1,10 @@
 #![feature(type_alias_impl_trait)]
 use rand::seq::SliceRandom;
 use rand::{Rng, RngCore};
-use self::{
+pub use self:: {
     chromosome::*,
-    crossover::*,
     individual::*,
+    crossover::*,
     mutation::*,
     selection::*,
 };

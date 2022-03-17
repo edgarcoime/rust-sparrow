@@ -1,6 +1,8 @@
 #![feature(crate_visibility_modifier)]
 
 pub use self::{world::*, animal::*, food::*, eye::*};
+use animal_individual::AnimalIndividual;
+use lib_genetic_algorithm as ga;
 use lib_neural_network as nn;
 use nalgebra as na;
 use rand::{Rng, RngCore};
@@ -9,6 +11,7 @@ use std::f32::consts::FRAC_PI_2;
 mod eye;
 mod world;
 mod animal;
+mod animal_individual;
 mod food;
 
 // region:      Constants
@@ -22,18 +25,31 @@ const SPEED_ACCEL: f32 = 0.2;
 /// Rotation Acceleration
 const ROTATION_ACCEL: f32 = FRAC_PI_2;
 
+// How many steps each bird gets to live 
+const GENERATIONAL_LENGTH: usize = 2500;
+
 // endregion:   Constants
 
-#[derive(Debug)]
 pub struct Simulation {
     world: World,
+    ga: ga::GeneticAlgorithm<ga::RouletteWheelSelection>,
+    age: usize,
 }
 
 impl Simulation {
     pub fn random(rng: &mut dyn RngCore) -> Self {
-        Self {
-            world: World::random(rng)
-        }
+        let world = World::random(rng);
+
+        let ga = ga::GeneticAlgorithm::new (
+            ga::RouletteWheelSelection::default(),
+            ga::UniformCrossover::default(),
+            ga::GaussianMutation::new(0.01, 0.3),
+            // Higher values make sim more chaotic which may allow for better solutions;
+            // but trade-off is that higher values cause good enough solutions currently
+            // to be discarded
+        );
+
+        Self { world, ga, age: 0 }
     }
 
     pub fn world(&self) -> &World {
@@ -45,10 +61,45 @@ impl Simulation {
         self.process_collisions(rng);
         self.process_brains();
         self.process_movements();
+
+        self.age += 1;
+
+        if self.age > GENERATIONAL_LENGTH {
+            self.evolve(rng);
+        }
     }
 }
 
 impl Simulation {
+    fn evolve(&mut self, rng: &mut dyn RngCore) {
+        self.age = 0;
+
+        // Step 1: Prepare animals to be sent into genetic algo.
+        let current_population: Vec<_> = self
+            .world
+            .animals
+            .iter()
+            .map(AnimalIndividual::from_animal)
+            .collect();
+
+        // Step 2: Evolve animals
+        let evolved_population = self.ga.evolve(rng, &current_population);
+
+        // Step 3: Bring animals back from the genetic algo
+        self.world.animals = todo!();
+
+        // Transforms `Vec<AnimalIndividual>` back into `Vec<Animal>`
+        self.world.animals = evolved_population
+            .into_iter()
+            .map(|individual| individual.into_animal(rng))
+            .collect();
+
+        // Step 4: Restart foods
+        for food in self.world.foods.iter_mut() {
+            food.position = rng.gen();
+        }
+    }
+
     fn process_movements(&mut self) {
         self.world.animals.iter_mut()
             .for_each(|a| a.process_movement())

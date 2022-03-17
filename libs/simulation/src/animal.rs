@@ -51,7 +51,6 @@ impl Animal {
 }
 
 impl Animal {
-
     crate fn process_movement(&mut self) {
         self.position += self.rotation * na::Vector2::new(self.speed, 0.);
 

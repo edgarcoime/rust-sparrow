@@ -3,7 +3,7 @@ use crate::*;
 // One of the manyy selection methods we could choose
 // https://www.tutorialspoint.com/genetic_algorithms/genetic_algorithms_parent_selection.htm
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Debug, Default)]
 pub struct RouletteWheelSelection;
 
 impl RouletteWheelSelection {
