@@ -1,3 +1,5 @@
+#![feature(crate_visibility_modifier)]
+
 pub use self::layer_topology::*;
 use self::{layer::*, neuron::*};
 use rand::{Rng, RngCore};
@@ -40,19 +42,14 @@ impl Network {
     }
 
     pub fn weights(&self) -> Vec<f32> {
-        let mut weights = Vec::new();
+        use std::iter::once;
 
-        for layer in &self.layers {
-            for neuron in &layer.neurons {
-                weights.push(neuron.bias);
-
-                for weight in &neuron.weights {
-                    weights.push(*weight)
-                }
-            }
-        }
-
-        weights
+        self.layers
+            .iter()
+            .flat_map(|layer| layer.neurons.iter())
+            .flat_map(|neuron| once(&neuron.bias).chain(&neuron.weights))
+            .cloned()
+            .collect()
     }
 }
 
@@ -62,4 +59,23 @@ mod tests {
     use super::*;
 
     // TODO: Setup Neural-Network Tests
+    mod weights {
+        use super::*;
+
+        #[test]
+        fn test() {
+            let network = Network::new(vec![
+                Layer::new(vec![Neuron::new(0.1, vec![0.2, 0.3, 0.4])]),
+                Layer::new(vec![Neuron::new(0.5, vec![0.6, 0.7, 0.8])]),
+            ]);
+
+            let actual = network.weights();
+            let expected: Vec<f32> = vec![0.1, 0.2];
+
+            approx::assert_relative_eq!(
+                actual.as_slice(),
+                expected.as_slice(),
+            );
+        }
+    }
 }
