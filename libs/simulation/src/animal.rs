@@ -30,7 +30,7 @@ impl Animal {
     crate fn process_movement(&mut self) {
         self.position += self.rotation * na::Vector2::new(self.speed, 0.);
 
-        // Wraps animals around canvas
+        // Wraps animals around
         self.position.x = na::wrap(self.position.x, 0., 1.);
         self.position.y = na::wrap(self.position.y, 0., 1.);
     }

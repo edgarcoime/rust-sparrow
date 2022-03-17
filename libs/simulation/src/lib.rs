@@ -4,6 +4,7 @@ use nalgebra as na;
 use rand::{Rng, RngCore};
 pub use self::{world::*, animal::*, food::*};
 
+mod eye;
 mod world;
 mod animal;
 mod food;
