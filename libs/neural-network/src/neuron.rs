@@ -38,6 +38,16 @@ impl Neuron {
 
         (self.bias + output).max(0.)
     }
+
+    pub fn from_weights(output_neurons: usize, weights: &mut dyn Iterator<Item = f32>) -> Self {
+        let bias = weights.next().expect("got not enough weights");
+
+        let weights = (0..output_neurons)
+            .map(|_| weights.next().expect("got enot enough weights"))
+            .collect();
+        
+        Self::new(bias, weights)
+    }
 }
 
 #[cfg(test)]
@@ -96,5 +106,18 @@ mod tests {
             neuron.propagate(&[0.5, 1.0]),
             (-0.3 * 0.5) + (0.8 * 1.0) + 0.5,
         )
+    }
+
+    mod from_weights {
+        use super::*;
+
+        #[test]
+        fn test() {
+            let actual = Neuron::from_weights(3, &mut vec![0.1, 0.2, 0.3, 0.4].into_iter());
+            let expected = Neuron::new(0.1, vec![0.2, 0.3, 0.4]);
+
+            approx::assert_relative_eq!(actual.bias, expected.bias);
+            approx::assert_relative_eq!(actual.weights.as_slice(), expected.weights.as_slice());
+        }
     }
 }
