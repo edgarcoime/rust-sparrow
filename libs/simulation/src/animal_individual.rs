@@ -10,7 +10,11 @@ pub struct AnimalIndividual {
 
 impl AnimalIndividual {
     pub fn from_animal(animal: &Animal) -> Self {
-        todo!()
+        // Fitness should be determined by amount of food eaten
+        Self {
+            fitness: animal.satiation as f32,
+            chromosome: todo!(),
+        }
     }
 
     pub fn into_animal(self, rng: &mut dyn RngCore) -> Animal {

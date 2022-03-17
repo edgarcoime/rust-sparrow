@@ -1,6 +1,6 @@
 #![feature(crate_visibility_modifier)]
 
-pub use self::{world::*, animal::*, food::*, eye::*};
+pub use self::{world::*, animal::*, food::*, eye::*, brain::*};
 use animal_individual::AnimalIndividual;
 use lib_genetic_algorithm as ga;
 use lib_neural_network as nn;
@@ -13,6 +13,7 @@ mod world;
 mod animal;
 mod animal_individual;
 mod food;
+mod brain;
 
 // region:      Constants
 
@@ -136,6 +137,7 @@ impl Simulation {
                 );
 
                 if distance <= 0.01 {
+                    animal.satiation += 1;
                     food.position = rng.gen();
                 }
             }
