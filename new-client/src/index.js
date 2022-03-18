@@ -24,12 +24,6 @@ let active = true;
  */
 const config = simulation.config();
 
-document.getElementById("train").onclick = function() {
-  for (let i = 0; i < 50; i++) {
-    console.log(simulation.train())
-  }
-}
-
 const redraw = () => {
   if (active) {
     const stats = simulation.step();
