@@ -31,7 +31,7 @@ impl ga::Individual for AnimalIndividual {
     }
 
     fn chromosome(&self) -> &ga::Chromosome {
-        &self.chromosome()
+        &self.chromosome
     }
 
     fn fitness(&self) -> f32 {
