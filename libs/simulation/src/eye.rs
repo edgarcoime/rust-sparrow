@@ -1,20 +1,6 @@
 use crate::*;
 use std::f32::consts::*;
 
-/// How far our eye can see:
-/// - 0.1 = 10% of the map = bird sees no foods (at least in this case)
-/// - 0.5 = 50% of the map = bird sees one of the foods
-/// - 1.0 = 100% of the map = bird sees both foods
-const FOV_RANGE: f32 = 0.25;
-
-/// How wide our eye can see:
-/// If @> marks our birdie (rotated to the right) and . marks the area
-/// our birdie sees, then a FOV_ANGLE of:
-const FOV_ANGLE: f32 = PI + FRAC_PI_4;
-
-/// How many photoreceptors there are in a single eye
-const DEFAULT_CELLS: usize = 9;
-
 #[derive(Debug)]
 pub struct Eye {
     fov_range: f32,
@@ -23,11 +9,15 @@ pub struct Eye {
 }
 
 impl Eye {
-    pub fn cells(&self) -> usize {
-        self.cells
+    crate fn new(config: &Config) -> Self {
+        Self::new_ex(
+            config.eye_fov_range, 
+            config.eye_fov_angle,
+            config.eye_cells,
+        )
     }
 
-    pub fn process_vision(
+    crate fn process_vision(
         &self,
         position: na::Point2<f32>,
         rotation: na::Rotation2<f32>,
@@ -73,18 +63,12 @@ impl Eye {
 }
 
 impl Eye {
-    fn new (fov_range: f32, fov_angle: f32, cells: usize) -> Self {
+    fn new_ex(fov_range: f32, fov_angle: f32, cells: usize) -> Self {
         assert!(fov_range > 0.);
         assert!(fov_angle > 0.);
         assert!(cells > 0);
 
         Self { fov_range, fov_angle, cells }
-    }
-}
-
-impl Default for Eye {
-    fn default() -> Self {
-        Self::new(FOV_RANGE, FOV_ANGLE, DEFAULT_CELLS)
     }
 }
 
@@ -105,7 +89,7 @@ mod tests {
 
     impl TestCase {
         fn run(self) {
-            let eye = Eye::new(
+            let eye = Eye::new_ex(
                 self.fov_range,
                 self.fov_angle,
                 TEST_EYE_CELLS,
