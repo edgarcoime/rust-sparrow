@@ -109,11 +109,21 @@ export class Terminal {
 
         break;
     }
-
-    console.log("Handling arrow up")
   }
 
   _handleArrowDown(event) {
-    console.log("Handling arrow down")
+    event.preventDefault();
+
+    if (this.state.id === TERMINAL_STATES.BROWSING) {
+      if (this.state.historyIdx > 1) {
+        this.state.historyIdx -= 1;
+
+        this.inputEl.value = this.history[
+          this.history.length - this.state.historyIdx
+        ];
+      } else {
+        this.inputEl.value = "";
+      }
+    }
   }
 }
