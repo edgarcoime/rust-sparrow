@@ -1,12 +1,6 @@
 #![feature(crate_visibility_modifier)]
 
-pub use self::{world::*, animal::*, food::*, eye::*, brain::*};
-use animal_individual::AnimalIndividual;
-use lib_genetic_algorithm as ga;
-use lib_neural_network as nn;
-use nalgebra as na;
-use rand::{Rng, RngCore};
-use std::f32::consts::FRAC_PI_2;
+pub use self::{world::*, animal::*, food::*, eye::*, brain::*, config::*};
 
 mod eye;
 mod world;
@@ -14,6 +8,15 @@ mod animal;
 mod animal_individual;
 mod food;
 mod brain;
+mod config;
+
+use animal_individual::AnimalIndividual;
+use lib_genetic_algorithm as ga;
+use lib_neural_network as nn;
+use nalgebra as na;
+use rand::{Rng, RngCore};
+use std::f32::consts::{FRAC_PI_2, FRAC_PI_4, PI};
+use serde::{Deserialize, Serialize};
 
 // region:      Constants
 
@@ -114,7 +117,7 @@ impl Simulation {
                 &self.world.foods,
             );
 
-            let response = animal.brain.propagate(vision);
+            let response = animal.brain.nn.propagate(vision);
 
             let speed = response[0].clamp(-SPEED_ACCEL, SPEED_ACCEL);
             let rotation = response[1].clamp(-ROTATION_ACCEL, ROTATION_ACCEL);
