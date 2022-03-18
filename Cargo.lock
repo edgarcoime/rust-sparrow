@@ -98,6 +98,7 @@ dependencies = [
  "lib-neural-network",
  "nalgebra",
  "rand",
+ "serde",
  "test-case",
 ]
 
