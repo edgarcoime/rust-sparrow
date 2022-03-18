@@ -17,15 +17,15 @@ export class Terminal {
     this.inputEl.onkeyup = (e) => {
       switch (e.keyCode) {
         case 13:
-          this._handleEnter();
+          this._handleEnter(e);
           break;
         
         case 38:
-          this._handleArrowUp();
+          this._handleArrowUp(e);
           break;
         
         case 40:
-          this._handleArrowDown();
+          this._handleArrowDown(e);
           break;
         
         default:
@@ -44,23 +44,42 @@ export class Terminal {
     this.onInputHandler = fn;
   }
 
-  println() {
-    console.log("Printing line")
+  println(msg) {
+    if (this.outputEl.value) {
+      this.outputEl.value += "\n";
+    }
+
+    this.outputEl.value += msg;
+    this.outputEl.scrollToTop = this.outputEl.scrollHeight;
   }
 
   scrollToTop() {
-    this.println("Scrolling to the top")
+    this.inputEl.focus();
+    this.outputEl.scrollToTop = 0;
   }
 
-  _handleEnter() {
-    console.log("Pressing enter")
+  _handleEnter(event) {
+    event.preventDefault();
+
+    const input = this.inputEl.value.trim();
+    if (input.length > 0) {
+      this.history.push(input);
+      this.onInputHandler(input);
+    }
+
+    this.inputEl.value = "";
+
+    this.state = {
+      id: TERMINAL_STATES.IDLE
+    }
+    console.log(this.history)
   }
 
-  _handleArrowUp() {
+  _handleArrowUp(event) {
     console.log("Handling arrow up")
   }
 
-  _handleArrowDown() {
+  _handleArrowDown(event) {
     console.log("Handling arrow down")
   }
 }
