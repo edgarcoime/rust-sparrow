@@ -17,12 +17,22 @@ pub struct Simulation {
 
 #[wasm_bindgen]
 impl Simulation {
-    #[wasm_bindgen]
-    pub fn new() -> Self {
+    #[wasm_bindgen(constructor)]
+    pub fn new(config: JsValue) -> Self {
+        let config: sim::Config = config.into_serde().unwrap();
+
         let mut rng = thread_rng();
-        let sim = sim::Simulation::random(&mut rng);
+        let sim = sim::Simulation::random(config, &mut rng);
 
         Self { rng, sim }
+    }
+
+    pub fn default_config() -> JsValue {
+        JsValue::from_serde(&sim::Config::default()).unwrap()
+    }
+
+    pub fn config(&self) -> JsValue {
+        JsValue::from_serde(self.sim.config()).unwrap()
     }
 
     pub fn world(&self) -> JsValue {
@@ -30,12 +40,12 @@ impl Simulation {
         JsValue::from_serde(&world).unwrap()
     }
 
-    pub fn step(&mut self) {
-        self.sim.step(&mut self.rng);
+    pub fn step(&mut self) -> Option<String> {
+        self.sim.step(&mut self.rng).map(|stats| stats.to_string())
     }
 
-    pub fn train(&mut self) {
-        self.sim.train(&mut self.rng);
+    pub fn train(&mut self) -> String {
+        self.sim.train(&mut self.rng).to_string()
     }
 }
 
@@ -43,15 +53,3 @@ impl Simulation {
 pub fn whos_that_dog() -> String {
     "That's not a dog that's a turtle".into()
 }
-
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
-
-//     #[test]
-//     fn test() {
-//         let sim = Simulation::new();
-//         println!("{:?}", sim.world());
-//         println!("Hello world");
-//     }
-// }
