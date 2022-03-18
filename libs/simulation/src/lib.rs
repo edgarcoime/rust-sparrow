@@ -43,7 +43,8 @@ pub struct Simulation {
 
 impl Simulation {
     pub fn random(config: Config, rng: &mut dyn RngCore) -> Self {
-        let world = World::random(rng);
+        let world = World::random(&config, rng);
+
         Self {
             config,
             world,
@@ -173,7 +174,7 @@ impl Simulation {
         // Transforms `Vec<AnimalIndividual>` back into `Vec<Animal>`
         self.world.animals = evolved_population
             .into_iter()
-            .map(|individual| individual.into_animal(rng))
+            .map(|individual| individual.into_animal(&self.config, rng))
             .collect();
 
         // Step 4: Restart foods
@@ -196,16 +197,5 @@ mod tests{
 
     #[test]
     fn test() {
-        let mut rng = thread_rng();
-        // A vector with three components.
-        let mut my_animal = Animal::random(&mut rng);
-        // // let my_vec3 = Vector2::new(0., 1., 0.);
-        println!("{:?}", my_animal.position);
-        my_animal.process_movement();
-        println!("{:?}", my_animal.position);
-        // println!("{:?}", my_animal);
-        // println!("{}", my_animal.position);
-        // println!("{}", my_animal.rotation);
-        // let mut vec1 = Vector3::new(1.0, 2.0, 3.0);
     }
 }
