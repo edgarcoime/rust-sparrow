@@ -60,8 +60,18 @@ impl Simulation {
         &self.world
     }
 
+    /// Forcefully evolve population to next generation
+    /// Fast-forwards until the end of the current generation
+    pub fn train(&mut self, rng: &mut dyn RngCore) {
+        loop {
+            if self.step(rng) {
+                return;
+            }
+        }
+    }
+
     /// Performs a single step - a single frame of our animation
-    pub fn step(&mut self, rng: &mut dyn RngCore) {
+    pub fn step(&mut self, rng: &mut dyn RngCore) -> bool {
         self.process_collisions(rng);
         self.process_brains();
         self.process_movements();
@@ -70,6 +80,9 @@ impl Simulation {
 
         if self.age > GENERATIONAL_LENGTH {
             self.evolve(rng);
+            true
+        } else {
+            false
         }
     }
 }

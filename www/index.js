@@ -109,4 +109,8 @@ function redraw() {
   requestAnimationFrame(redraw);
 }
 
+document.getElementById("train").onclick = function () {
+  simulation.train();
+}
+
 redraw();
