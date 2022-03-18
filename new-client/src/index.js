@@ -1,6 +1,12 @@
 import "./index.css";
 import { Viewport } from "./app/viewport";
 import * as sim from "lib-simulation-wasm";
+import { Terminal } from "./app/terminal";
+
+const terminal = new Terminal(
+  document.getElementById("terminal-stdin"),
+  document.getElementById("terminal-stdout"),
+);
 
 const viewport = new Viewport(document.getElementById("viewport"));
 
@@ -24,6 +30,35 @@ let active = true;
  */
 const config = simulation.config();
 
+terminal.onInput((input) => {
+  terminal.println("");
+  terminal.println("$ " + input);
+
+  try {
+    exec(input)
+  } catch(err) {
+    terminal.println(`  ^ err: ${err}`);
+  }
+});
+
+function exec(input) {
+  if (input.includes("[") || input.includes("]")) {
+    throw "square brackets are for documentation purposes - you don't need to write them, eg.: reset animals=40"
+  }
+
+  const [cmd, ...args] = input.split(" ");
+}
+
+function execReset(args) {
+}
+
+function execPause(args) {
+}
+
+function execTrain(args) {
+}
+
+// region     Animation
 const redraw = () => {
   if (active) {
     const stats = simulation.step();
@@ -75,8 +110,6 @@ const redraw = () => {
   }
 };
 
-
-// region     Animation
 var fps = 60;
 var now;
 var then = Date.now()

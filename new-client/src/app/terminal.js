@@ -36,10 +36,12 @@ export class Terminal {
           }
       }
     }
+
+    this.onInputHandler = (_line) => void 0;
   }
 
-  onInput() {
-    console.log("On Input")
+  onInput(fn) {
+    this.onInputHandler = fn;
   }
 
   println() {
