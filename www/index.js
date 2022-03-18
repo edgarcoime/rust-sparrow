@@ -79,8 +79,29 @@ const redraw = () => {
     }
   }
 
-
-  requestAnimationFrame(redraw);
+  // requestAnimationFrame(redraw);
 };
 
-redraw()
+// region     Animation
+
+var fps = 60;
+var now;
+var then = Date.now()
+var interval = 1000 / fps;
+var delta;
+
+function animationLoop() {
+  requestAnimationFrame(animationLoop);
+
+  now = Date.now()
+  delta = now - then;
+
+  if (delta > interval) {
+    then = now - (delta % interval);
+
+    redraw()
+  }
+}
+
+animationLoop();
+// endregion: Animation
