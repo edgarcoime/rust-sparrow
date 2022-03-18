@@ -40,13 +40,13 @@ where
         }
     }
 
-    pub fn evolve<I>(&self, rng: &mut dyn RngCore, population: &[I]) -> Vec<I>
+    pub fn evolve<I>(&self, rng: &mut dyn RngCore, population: &[I]) -> (Vec<I>, Statistics)
     where
-        I: Individual
+        I: Individual,
     {
         assert!(!population.is_empty());
 
-        (0..population.len())
+        let new_population = (0..population.len())
             .map(|_| {
                 // TODO: selection
                 let parent_a = self
@@ -68,7 +68,9 @@ where
                 // TODO: convert chromosome back into individual
                 I::create(child)
             })
-            .collect()
+            .collect();
+        
+        (new_population, Statistics::new(population))
     }
 }
 
@@ -102,7 +104,7 @@ mod tests {
 
         // Running `.evolve()` so that differences between initial and ouput popolation are easier to spot
         for _ in 0..25 {
-            population = ga.evolve(&mut rng, &population);
+            population = ga.evolve(&mut rng, &population).0;
         }
 
         let expected_population = vec![
