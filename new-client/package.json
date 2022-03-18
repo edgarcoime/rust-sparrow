@@ -1,0 +1,19 @@
+{
+  "name": "sparrow",
+  "version": "1.0.0",
+  "description": "A neural network powered with a genetic algorithm",
+  "private": true,
+  "scripts": {
+    "build": "webpack --config webpack.prod.js",
+    "dev": "webpack serve --open --config webpack.dev.js"
+  },
+  "author": "Edgar Coime",
+  "license": "MIT",
+  "devDependencies": {
+    "html-webpack-plugin": "^5.5.0",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4",
+    "webpack-merge": "^5.8.0"
+  }
+}
