@@ -1,4 +1,5 @@
 #![feature(type_alias_impl_trait)]
+#![feature(crate_visibility_modifier)]
 use rand::seq::SliceRandom;
 use rand::{Rng, RngCore};
 pub use self:: {
@@ -7,8 +8,10 @@ pub use self:: {
     crossover::*,
     mutation::*,
     selection::*,
+    statistics::*,
 };
 
+mod statistics;
 mod individual;
 mod chromosome;
 mod selection;
