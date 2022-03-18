@@ -1,6 +1,6 @@
 #![feature(crate_visibility_modifier)]
 
-pub use self::{world::*, animal::*, food::*, eye::*, brain::*, config::*};
+pub use self::{world::*, animal::*, food::*, eye::*, brain::*, config::*, animal_individual::*, statistics::*};
 
 mod eye;
 mod world;
@@ -9,13 +9,14 @@ mod animal_individual;
 mod food;
 mod brain;
 mod config;
+mod statistics;
 
 use animal_individual::AnimalIndividual;
 use lib_genetic_algorithm as ga;
 use lib_neural_network as nn;
 use nalgebra as na;
 use rand::{Rng, RngCore};
-use std::f32::consts::{FRAC_PI_2, FRAC_PI_4, PI};
+use std::f32::consts::*;
 use serde::{Deserialize, Serialize};
 
 // region:      Constants
