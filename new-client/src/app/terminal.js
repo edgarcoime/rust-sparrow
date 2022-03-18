@@ -76,6 +76,40 @@ export class Terminal {
   }
 
   _handleArrowUp(event) {
+    event.preventDefault();
+
+    switch (this.state.id) {
+      case TERMINAL_STATES.IDLE:
+        if (this.history.length <= 0) {
+          return;
+        }
+
+        if (this.inputEl.value.length > 0) {
+          return;
+        }
+
+        this.state = {
+          id: TERMINAL_STATES.BROWSING,
+          historyIdx: 1,
+        }
+
+        this.inputEl.value = this.history[this.history.length - 1];
+        break;
+      
+      case TERMINAL_STATES.BROWSING:
+        if (this.state.historyIdx < this.history.length) {
+          this.state.historyIdx += 1;
+
+          this.inputEl.value = this.history[
+            this.history.length - this.state.historyIdx
+          ];
+        } else {
+          this.inputEl.value = "";
+        }
+
+        break;
+    }
+
     console.log("Handling arrow up")
   }
 
