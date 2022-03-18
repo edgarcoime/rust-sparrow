@@ -18,22 +18,6 @@ use rand::{Rng, RngCore};
 use std::f32::consts::*;
 use serde::{Deserialize, Serialize};
 
-// region:      Constants
-
-/// Mimum speed of bird
-const SPEED_MIN: f32 = 0.001;
-/// Maximum speed of bird
-const SPEED_MAX: f32 = 0.005;
-/// Acceleration of speed of bird
-const SPEED_ACCEL: f32 = 0.2;
-/// Rotation Acceleration
-const ROTATION_ACCEL: f32 = FRAC_PI_2;
-
-// How many steps each bird gets to live 
-const GENERATIONAL_LENGTH: usize = 2500;
-
-// endregion:   Constants
-
 pub struct Simulation {
     config: Config,
     world: World,
@@ -88,23 +72,7 @@ impl Simulation {
 
     fn process_brains(&mut self) {
         for animal in self.world.animals.iter_mut() {
-            let vision = animal.eye.process_vision(
-                animal.position,
-                animal.rotation,
-                &self.world.foods,
-            );
-
-            let response = animal.brain.nn.propagate(vision);
-
-            let speed = response[0].clamp(-SPEED_ACCEL, SPEED_ACCEL);
-            let rotation = response[1].clamp(-ROTATION_ACCEL, ROTATION_ACCEL);
-
-            animal.speed = 
-                (animal.speed + speed).clamp(SPEED_MIN, SPEED_MAX);
-
-            animal.rotation = na::Rotation2::new(
-                animal.rotation.angle() + rotation,
-            );
+            animal.process_brain(&self.config, &self.world.foods);
         }
     }
 
@@ -191,11 +159,21 @@ impl Simulation {
 
 #[cfg(test)]
 mod tests{
-    use rand::thread_rng;
-    use na::{Vector2, Vector3};
     use super::*;
+    use rand::SeedableRng;
+    use rand_chacha::ChaCha8Rng;
 
     #[test]
+    #[ignore]
     fn test() {
+        let mut rng = ChaCha8Rng::from_seed(Default::default());
+        let mut sim = Simulation::random(Default::default(), &mut rng);
+
+        let avg_fitness = (0..10)
+            .map(|_| sim.train(&mut rng).ga.avg_fitness())
+            .sum::<f32>()
+            / 10.0;
+        
+        approx::assert_relative_eq!(avg_fitness, 17.17)
     }
 }

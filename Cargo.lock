@@ -94,10 +94,12 @@ dependencies = [
 name = "lib-simulation"
 version = "0.1.0"
 dependencies = [
+ "approx",
  "lib-genetic-algorithm",
  "lib-neural-network",
  "nalgebra",
  "rand",
+ "rand_chacha",
  "serde",
  "test-case",
 ]

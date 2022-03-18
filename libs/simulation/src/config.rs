@@ -33,7 +33,7 @@ impl Default for Config {
             //
             eye_fov_range: 0.25,
             eye_fov_angle: PI + FRAC_PI_4,
-            eye_cells: 9,
+            eye_cells: 5,
             //
             food_size: 0.01,
             //

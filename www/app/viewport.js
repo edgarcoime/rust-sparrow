@@ -11,7 +11,7 @@ export class Viewport {
             window.innerHeight - 50,
         )
         
-        this.el.window = size * pixelRatio;
+        this.el.width = size * pixelRatio;
         this.el.height = size * pixelRatio;
         this.el.style.width = size + "px";
         this.el.style.height = size + "px";
