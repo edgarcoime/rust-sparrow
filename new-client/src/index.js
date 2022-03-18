@@ -1,3 +1,4 @@
+import "./index.css";
 import { Viewport } from "./app/viewport";
 import * as sim from "lib-simulation-wasm";
 

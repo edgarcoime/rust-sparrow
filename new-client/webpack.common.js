@@ -1,7 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
-const webpack = require('webpack');
 
 module.exports = { 
   entry: {
@@ -12,18 +10,23 @@ module.exports = {
     filename: "index.js",
     clean: true,
   },
+  target: ["web", "es5"],
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src/index.html")
     }),
-    // new WasmPackPlugin({
-    //   crateDirectory: path.resolve(__dirname, "../libs/simulation-wasm")
-    // }),
-    // new webpack.ProvidePlugin({
-    //   TextEncoder: ["text-encoding", "TextEncoder"],
-    //   TextDecoder: ["text-encoding", "TextDecoder"],
-    // })
   ],
+  module: {
+    rules: [
+      {
+        test: /\.(sa|sc|c)ss$/i,
+        use: [
+          "style-loader",
+          "css-loader",
+        ],
+      },
+    ],
+  },
   experiments: {
     asyncWebAssembly: true,
   }
