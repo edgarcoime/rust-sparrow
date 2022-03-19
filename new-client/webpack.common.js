@@ -9,7 +9,7 @@ module.exports = {
     filename: "index.js",
     clean: true,
   },
-  target: ["web", "es5"],
+  // target: ["web", "es5"],
   experiments: {
     asyncWebAssembly: true,
   }
