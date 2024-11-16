@@ -18,7 +18,14 @@ struct Layer {
 
 impl Layer {
     fn propagate(&self, inputs: Vec<f32>) -> Vec<f32> {
-        todo!()
+        let mut ouputs = Vec::new();
+
+        for neuron in &self.neurons {
+            let ouput = neuron.propagate(&inputs);
+            ouputs.push(ouput);
+        }
+
+        ouputs
     }
 }
 
@@ -26,4 +33,10 @@ impl Layer {
 struct Neuron {
     bias: f32,
     weights: Vec<f32>,
+}
+
+impl Neuron {
+    fn propagate(&self, inputs: &[f32]) -> f32 {
+        todo!()
+    }
 }
