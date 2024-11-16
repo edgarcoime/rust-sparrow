@@ -18,14 +18,10 @@ struct Layer {
 
 impl Layer {
     fn propagate(&self, inputs: Vec<f32>) -> Vec<f32> {
-        let mut ouputs = Vec::new();
-
-        for neuron in &self.neurons {
-            let ouput = neuron.propagate(&inputs);
-            ouputs.push(ouput);
-        }
-
-        ouputs
+        self.neurons
+            .iter()
+            .map(|neuron| neuron.propagate(&inputs))
+            .collect()
     }
 }
 
@@ -37,6 +33,16 @@ struct Neuron {
 
 impl Neuron {
     fn propagate(&self, inputs: &[f32]) -> f32 {
-        todo!()
+        // Asserts implementation is correct b/c data here is internal
+        // if wrong then our implementation is wrong
+        assert_eq!(inputs.len(), self.weights.len());
+
+        let ouput = inputs
+            .iter()
+            .zip(&self.weights)
+            .map(|(input, weight)| input * weight)
+            .sum::<f32>();
+
+        (self.bias + ouput).max(0.0)
     }
 }
