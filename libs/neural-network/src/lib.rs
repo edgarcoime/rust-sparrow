@@ -35,7 +35,11 @@ struct Layer {
 
 impl Layer {
     fn random(input_size: usize, ouput_size: usize) -> Self {
-        todo!()
+        let neurons = (0..ouput_size)
+            .map(|_| Neuron::random(input_size))
+            .collect();
+
+        Self { neurons }
     }
 
     fn propagate(&self, inputs: Vec<f32>) -> Vec<f32> {
@@ -53,6 +57,16 @@ struct Neuron {
 }
 
 impl Neuron {
+    fn random(input_size: usize) -> Self {
+        let bias = todo!();
+
+        let weights = (0..input_size)
+            .map(|_| todo!())
+            .collect();
+
+        Self { bias, weights }
+    }
+
     fn propagate(&self, inputs: &[f32]) -> f32 {
         // Asserts implementation is correct b/c data here is internal
         // if wrong then our implementation is wrong
