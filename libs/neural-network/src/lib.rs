@@ -1,9 +1,26 @@
 #[derive(Debug)]
+pub struct LayerTopology {
+    pub neurons: usize,
+}
+
+#[derive(Debug)]
 pub struct Network {
     layers: Vec<Layer>,
 }
 
 impl Network {
+    pub fn random(layers: &[LayerTopology]) -> Self {
+        // Layer with 1 is doable bet doesnt make sense
+        assert!(layers.len() > 1);
+
+        let layers = layers
+            .windows(2)
+            .map(|layers| Layer::random(layers[0].neurons, layers[1].neurons))
+            .collect();
+
+        Self { layers }
+    }
+
     pub fn propagate(&self, inputs: Vec<f32>) -> Vec<f32> {
         self.layers
             .iter()
@@ -17,6 +34,10 @@ struct Layer {
 }
 
 impl Layer {
+    fn random(input_size: usize, ouput_size: usize) -> Self {
+        todo!()
+    }
+
     fn propagate(&self, inputs: Vec<f32>) -> Vec<f32> {
         self.neurons
             .iter()
