@@ -1,3 +1,6 @@
+use rand::Rng;
+
+
 #[derive(Debug)]
 pub struct LayerTopology {
     pub neurons: usize,
@@ -58,10 +61,11 @@ struct Neuron {
 
 impl Neuron {
     fn random(input_size: usize) -> Self {
-        let bias = todo!();
+        let mut rng = rand::thread_rng();
+        let bias = rng.gen_range(-1.0..=1.0);
 
         let weights = (0..input_size)
-            .map(|_| todo!())
+            .map(|_| rng.gen_range(-1.0..=1.0))
             .collect();
 
         Self { bias, weights }
