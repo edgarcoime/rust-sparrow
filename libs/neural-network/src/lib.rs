@@ -1,8 +1,9 @@
 use rand::{Rng, RngCore};
 
-use self::neuron::*;
+use self::{layer::*, neuron::*};
 
 mod neuron;
+mod layer;
 
 #[derive(Debug)]
 pub struct LayerTopology {
@@ -33,29 +34,6 @@ impl Network {
             .fold(inputs, |inputs, layer| layer.propagate(inputs))
     }
 }
-
-#[derive(Debug)]
-struct Layer {
-    neurons: Vec<Neuron>,
-}
-
-impl Layer {
-    fn random(rng: &mut dyn RngCore, input_size: usize, ouput_size: usize) -> Self {
-        let neurons = (0..ouput_size)
-            .map(|_| Neuron::random(rng, input_size))
-            .collect();
-
-        Self { neurons }
-    }
-
-    fn propagate(&self, inputs: Vec<f32>) -> Vec<f32> {
-        self.neurons
-            .iter()
-            .map(|neuron| neuron.propagate(&inputs))
-            .collect()
-    }
-}
-
 
 #[cfg(test)]
 mod tests {
