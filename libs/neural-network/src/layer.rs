@@ -1,4 +1,5 @@
-use crate::*;
+use rand::RngCore;
+use crate::neuron::Neuron;
 
 #[derive(Debug)]
 pub(crate) struct Layer {
