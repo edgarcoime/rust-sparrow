@@ -1,5 +1,5 @@
-use rand::RngCore;
 use crate::layer::Layer;
+use rand::RngCore;
 
 #[derive(Debug)]
 pub struct LayerTopology {

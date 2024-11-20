@@ -1,6 +1,5 @@
 use rand::{Rng, RngCore};
 
-
 #[derive(Debug)]
 pub struct Neuron {
     pub(crate) bias: f32,

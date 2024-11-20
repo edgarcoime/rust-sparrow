@@ -1,9 +1,8 @@
 use self::{layer::Layer, neuron::Neuron};
 
+mod layer;
 mod network;
 mod neuron;
-mod layer;
-
 
 #[cfg(test)]
 mod tests {
