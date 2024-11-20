@@ -13,7 +13,6 @@ impl SelectionMethod for RouletteWheelSelection {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::*;
@@ -21,7 +20,6 @@ mod tests {
     use rand_chacha::ChaCha8Rng;
     use std::collections::BTreeMap;
     use std::iter::FromIterator;
-
 
     #[test]
     fn roulette_wheel_selection() {
@@ -41,12 +39,7 @@ mod tests {
                 histogram
             });
 
-        let expected_histogram = BTreeMap::from_iter([
-            (1, 98),
-            (2, 202),
-            (3, 278),
-            (4, 422),
-        ]);
+        let expected_histogram = BTreeMap::from_iter([(1, 98), (2, 202), (3, 278), (4, 422)]);
 
         assert_eq!(actual_histogram, expected_histogram);
     }
