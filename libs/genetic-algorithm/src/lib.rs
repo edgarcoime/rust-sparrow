@@ -1,7 +1,8 @@
-pub use self::{individual::*, selection::*};
+pub use self::{chromosome::*, individual::*, selection::*};
 use rand::seq::SliceRandom;
 use rand::{Rng, RngCore};
 
+mod chromosome;
 mod individual;
 mod selection;
 
