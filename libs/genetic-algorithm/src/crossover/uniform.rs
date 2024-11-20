@@ -22,9 +22,9 @@ impl CrossoverMethod for UniformCrossover {
 
 #[cfg(test)]
 mod tests {
+    use crate::*;
     use rand::SeedableRng;
     use rand_chacha::ChaCha8Rng;
-    use crate::*;
 
     #[test]
     fn uniform_crossover() {
