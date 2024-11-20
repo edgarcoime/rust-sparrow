@@ -1,5 +1,8 @@
+use crate::*;
+
 pub trait Individual {
     fn fitness(&self) -> f32;
+    fn chromosome(&self) -> &Chromosome;
 }
 
 #[cfg(test)]
@@ -22,13 +25,15 @@ impl Individual for TestIndividual {
     //    Self::WithChromosome { chromosome }
     //}
     //
-    //fn chromosome(&self) -> &Chromosome {
-    //    match self {
-    //        Self::WithChromosome { chromosome } => chromosome,
-    //        Self::WithFitness { .. } => panic!("not supported for TestIndividual::WithFitness"),
-    //    }
-    //}
-    //
+
+    fn chromosome(&self) -> &Chromosome {
+        panic!("not supported for TestIndividual");
+        //match self {
+        //    Self::WithChromosome { chromosome } => chromosome,
+        //    Self::WithFitness { .. } => panic!("not supported for TestIndividual::WithFitness"),
+        //}
+    }
+
     fn fitness(&self) -> f32 {
         match self {
             //Self::WithChromosome { chromosome } => chromosome.iter().sum(),
