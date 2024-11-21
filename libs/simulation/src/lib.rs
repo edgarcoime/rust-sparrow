@@ -1,10 +1,13 @@
+pub use self::{food::*, animal::*, world::*};
+
 mod world;
 mod animal;
 mod food;
 
+pub use crate::{animal::*, food::*, world::*};
+
 use nalgebra as na;
 use rand::{Rng, RngCore};
-use crate::{animal::*, food::*, world::*};
 
 
 pub struct Simulation {
